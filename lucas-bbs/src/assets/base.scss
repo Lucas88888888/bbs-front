@@ -1,0 +1,48 @@
+/* color palette from <https://github.com/vuejs/theme> */
+
+// 滚动条宽度
+div::-webkit-scrollbar {
+  width: 6px;
+}
+// 滚动条轨道
+div::-webkit-scrollbar-track {
+  background: rgb(239, 239, 239);
+  border-radius: 2px;
+}
+// 小滑块
+div::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 10px;
+}
+div::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+:root {
+  --link: #007fff;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--link);
+}
+.el-form-item {
+  align-items: center;
+}
