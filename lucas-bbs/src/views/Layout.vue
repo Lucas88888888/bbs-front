@@ -70,6 +70,19 @@ const getUserInfo = async () => {
   store.commit("updateLoginUserInfo", result.data);
 };
 
+//获取板块信息
+const boardList = ref([]);
+const loadBoard = async () => {
+  let result = await proxy.Request({
+    url: proxy.globalInfo.api.loadBoard,
+  });
+  if (!result) {
+    return;
+  }
+  boardList.value = result.data;
+};
+loadBoard();
+
 //监听 登录用户信息
 const userInfo = ref({});
 watch(
@@ -102,8 +115,29 @@ watch(
       <div class="header-content">
         <!-- logo -->
         <router-link to="/" class="header-logo">Easybbs</router-link>
-        <!-- header-头部导航 -->
-        <div class="header-menu"></div>
+        <!-- header-头部导航,板块信息 -->
+        <div class="header-menu">
+          <span class="header-menu-board">全部</span>
+
+          <template v-for="board in boardList">
+            <el-popover
+              placement="bottom-start"
+              :width="300"
+              trigger="hover"
+              v-if="board.children.length > 0"
+            >
+              <template #reference>
+                <span class="header-menu-board">{{ board.boardName }}</span>
+              </template>
+              <div class="sub-board-list">
+                <span class="sub-board" v-for="subBoard in board.children">
+                  {{ subBoard.boardName }}
+                </span>
+              </div>
+            </el-popover>
+            <span class="header-menu-board" v-else>{{ board.boardName }}</span>
+          </template>
+        </div>
         <!-- header-头部用户信息 -->
         <div class="header-operate">
           <el-button type="primary">
@@ -158,7 +192,7 @@ watch(
       </div>
     </div>
 
-    <div>
+    <div class="body-content">
       <router-view></router-view>
     </div>
   </div>
@@ -170,6 +204,7 @@ watch(
 <style lang="scss" scoped>
 .header {
   position: fixed;
+  top: 0;
   width: 100%;
   box-shadow: 0 2px 6px #ddd;
   &-content {
@@ -192,6 +227,13 @@ watch(
 
   &-menu {
     flex: 1;
+
+    &-board {
+      font-size: 1.6rem;
+      color: #333;
+      margin-left: 2rem;
+      cursor: pointer;
+    }
   }
 
   &-operate {
@@ -226,5 +268,30 @@ watch(
   button {
     cursor: pointer;
   }
+}
+
+.sub-board-list {
+  display: flex;
+  flex-wrap: wrap;
+
+  .sub-board {
+    border: 1px solid #ddd;
+    background-color: #ddd;
+    color: rgb(135, 135, 135);
+    padding: 0px 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-right: 10px;
+
+    &:hover {
+      color: var(--link);
+      cursor: pointer;
+    }
+  }
+}
+
+.body-content {
+  margin-top: 6rem;
+  position: relative;
 }
 </style>

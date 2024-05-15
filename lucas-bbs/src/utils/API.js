@@ -6,4 +6,6 @@ export default {
   resetPwd: "/resetPwd",
   getUserInfo: "/getUserInfo",
   avatarUrl: "/api/file/getAvatar/",
+  loadBoard: "/board/loadBoard",
+  loadArticle: "/forum/loadArticle",
 };
