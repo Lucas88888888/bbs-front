@@ -17,6 +17,8 @@ import API from "@/utils/API.js";
 //全局组件
 import Dialog from "@/components/Dialog.vue";
 import Avatar from "@/components/Avatar.vue";
+import Cover from "@/components/Cover.vue";
+import DataList from "@/components/DataList.vue";
 
 const app = createApp(App);
 
@@ -36,5 +38,7 @@ app.config.globalProperties.Request = Request;
 
 app.component("Dialog", Dialog);
 app.component("Avatar", Avatar);
+app.component("Cover", Cover);
+app.component("DataList", DataList);
 
 app.mount("#app");

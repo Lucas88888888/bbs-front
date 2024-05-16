@@ -168,7 +168,7 @@ watch(
 
             <div class="user-info">
               <el-dropdown>
-                <Avatar :userId="userInfo.userId"></Avatar>
+                <Avatar :userId="userInfo.userId" :width="5"></Avatar>
 
                 <template #dropdown>
                   <el-dropdown-menu>

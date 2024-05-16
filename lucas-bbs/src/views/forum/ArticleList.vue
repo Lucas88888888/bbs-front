@@ -9,11 +9,13 @@ const route = useRoute();
 //文章列表
 const articleListInfo = ref({});
 const loadArticle = async () => {
+  let params = {
+    pageNo: articleListInfo.value.pageNo,
+    boardId: 0,
+  };
   let result = await proxy.Request({
     url: proxy.globalInfo.api.loadArticle,
-    // params: {
-    //   boardId: 0,
-    // },
+    params: params,
   });
   if (!result) {
     return;
@@ -22,6 +24,7 @@ const loadArticle = async () => {
 };
 loadArticle();
 </script>
+
 <template>
   <div
     class="body-container body-article-list"
@@ -36,9 +39,11 @@ loadArticle();
         <div>最新</div>
       </div>
       <div class="article-list">
-        <div v-for="item in articleListInfo.list">
-          <ArticleListItem :data="item"></ArticleListItem>
-        </div>
+        <DataList :dataSource="articleListInfo" @loadData="loadArticle">
+          <template #dataList="{ data }">
+            <ArticleListItem :data="data"></ArticleListItem>
+          </template>
+        </DataList>
       </div>
     </div>
   </div>
