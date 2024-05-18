@@ -13,6 +13,24 @@ const router = createRouter({
           name: "allArticles",
           component: () => import("@/views/forum/ArticleList.vue"),
         },
+
+        {
+          path: "/forum/:pBoardId",
+          name: "topBoard",
+          component: () => import("@/views/forum/ArticleList.vue"),
+        },
+
+        {
+          path: "/forum/:pBoardId/:boardId/",
+          name: "secBoard",
+          component: () => import("@/views/forum/ArticleList.vue"),
+        },
+
+        {
+          path: "/user/:userId",
+          name: "userInfo",
+          component: () => import("@/views/ucenter/Ucenter.vue"),
+        },
       ],
     },
   ],

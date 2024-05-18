@@ -83,6 +83,20 @@ const loadBoard = async () => {
 };
 loadBoard();
 
+//一级板块点击
+const boardClickHandler = (board) => {
+  router.push(`/forum/${board.boardId}`);
+  // router.push({ name: "topBoard", params: { pBoardId: board.boardId } });
+};
+
+//二级板块
+const subBoardClickHandler = (subBoard) => {
+  router.push(`/forum/${subBoard.pBoardId}/${subBoard.boardId}/`);
+  // router.push({
+  //   name: "secBoard",
+  //   params: { pBoardId: subBoard.pboardId, boardId: subBoard.boardId },
+  // });
+};
 //监听 登录用户信息
 const userInfo = ref({});
 watch(
@@ -117,7 +131,7 @@ watch(
         <router-link to="/" class="header-logo">Easybbs</router-link>
         <!-- header-头部导航,板块信息 -->
         <div class="header-menu">
-          <span class="header-menu-board">全部</span>
+          <span class="header-menu-board" to="/">首页</span>
 
           <template v-for="board in boardList">
             <el-popover
@@ -127,15 +141,28 @@ watch(
               v-if="board.children.length > 0"
             >
               <template #reference>
-                <span class="header-menu-board">{{ board.boardName }}</span>
+                <span
+                  class="header-menu-board"
+                  @click="boardClickHandler(board)"
+                  >{{ board.boardName }}</span
+                >
               </template>
               <div class="sub-board-list">
-                <span class="sub-board" v-for="subBoard in board.children">
+                <span
+                  class="sub-board"
+                  v-for="subBoard in board.children"
+                  @click="subBoardClickHandler(subBoard)"
+                >
                   {{ subBoard.boardName }}
                 </span>
               </div>
             </el-popover>
-            <span class="header-menu-board" v-else>{{ board.boardName }}</span>
+            <span
+              class="header-menu-board"
+              @click="boardClickHandler(board)"
+              v-else
+              >{{ board.boardName }}</span
+            >
           </template>
         </div>
         <!-- header-头部用户信息 -->
