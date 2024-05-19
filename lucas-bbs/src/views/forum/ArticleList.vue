@@ -1,6 +1,7 @@
 <script setup>
 import ArticleListItem from "./ArticleListItem.vue";
 import { ref, getCurrentInstance, watch } from "vue";
+import { useStore } from "vuex";
 import {
   onBeforeRouteLeave,
   onBeforeRouteUpdate,
@@ -10,6 +11,7 @@ import {
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 const route = useRoute();
+const store = useStore();
 
 //loading--用来标识正在加载的变量，在加载过程中，显示骨架效果
 const loading = ref(false);
@@ -67,28 +69,45 @@ const loadArticle = async () => {
 };
 // loadArticle();
 
+//二级板块
+const subBoardList = ref([]);
+const setSubBoard = () => {
+  subBoardList.value = store.getters.getSubBoardList(pBoardId.value);
+};
+
+//文章排序的方式
 const changeOrderType = (type) => {
   orderType.value = type;
   loadArticle();
 };
 
 // 监听路由变化
+
 onBeforeRouteUpdate((to, from) => {
-  console.log(to.params);
-  console.log(from.params);
-  console.log("----------------");
-  pBoardId.value = to.params.pBoardId ? to.params.pBoardId : 0;
-  boardId.value = to.params.boardId ? to.params.boardId : 0;
-  if (to.params !== from.params) {
-    loadArticle();
-  }
+  pBoardId.value = to.params.pBoardId ? to.params.pBoardId : "";
+  boardId.value = to.params.boardId ? to.params.boardId : "";
+  loadArticle();
+  setSubBoard();
+  store.commit("setActivePBoardId", pBoardId.value);
+  store.commit("setActiveBoardId", boardId.value);
 });
 
 onBeforeRouteLeave((to, from) => {
-  pBoardId.value = to.params.pBoardId ? to.params.pBoardId : 0;
-  boardId.value = to.params.boardId ? to.params.boardId : 0;
+  pBoardId.value = to.params.pBoardId ? to.params.pBoardId : "";
+  boardId.value = to.params.boardId ? to.params.boardId : "";
+  setSubBoard();
   loadArticle();
+  store.commit("setActivePBoardId", pBoardId.value);
+  store.commit("setActiveBoardId", boardId.value);
 });
+
+watch(
+  () => store.state.boardList,
+  (newVal, oldVal) => {
+    setSubBoard();
+  },
+  { immediate: true, deep: true }
+);
 </script>
 
 <template>
@@ -96,6 +115,20 @@ onBeforeRouteLeave((to, from) => {
     class="body-container body-article-list"
     :style="{ width: proxy.globalInfo.bodyWidth + 'rem' }"
   >
+    <!-- 二级板块信息 -->
+    <div class="sub-board" v-if="pBoardId">
+      <span :class="['subBoard-item', boardId == 0 ? 'active' : '']">
+        <router-link :to="`/forum/${pBoardId}`">全部</router-link>
+      </span>
+      <span
+        v-for="item in subBoardList"
+        :class="['subBoard-item', item.boardId == boardId ? 'active' : '']"
+      >
+        <router-link :to="`/forum/${item.pBoardId}/${item.boardId}/`">{{
+          item.boardName
+        }}</router-link>
+      </span>
+    </div>
     <div class="article-panel">
       <div class="top-tab">
         <div
@@ -137,8 +170,32 @@ onBeforeRouteLeave((to, from) => {
 
 <style lang="scss" scoped>
 .body-article-list {
+  .sub-board {
+    padding: 10px 0;
+
+    a {
+      color: #909090;
+    }
+    .subBoard-item {
+      background: #fff;
+      border-radius: 15px;
+      padding: 2px 10px;
+      margin-right: 10px;
+      // color: #909090;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .active {
+      background: var(--link);
+      a {
+        color: #ffffff;
+      }
+    }
+  }
   .article-panel {
     background: #fff;
+
     .top-tab {
       display: flex;
       align-items: center;

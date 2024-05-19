@@ -27,8 +27,8 @@ const handlePageNoChange = (pageNo) => {
   </div>
 
   <!-- 骨架效果 -->
-  <div class="skeleton">
-    <el-skeleton :rows="3" animated v-if="loading" />
+  <div class="skeleton" v-if="loading">
+    <el-skeleton :rows="3" animated />
   </div>
   <div v-for="item in dataSource.list" v-if="!loading">
     <slot :data="item" name="dataList"></slot>

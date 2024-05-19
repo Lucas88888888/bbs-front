@@ -80,6 +80,7 @@ const loadBoard = async () => {
     return;
   }
   boardList.value = result.data;
+  store.commit("saveBoardList", result.data);
 };
 loadBoard();
 
@@ -114,9 +115,32 @@ watch(
 //监听是否展示登录框 用于长时间未操作情况下的登录超时
 watch(
   () => store.state.showLogin,
-  () => (newVal, oldVal) => {
+  (newVal, oldVal) => {
     if (newVal) {
       loginAndRegister(1);
+    }
+  },
+  { immediate: true, deep: true }
+);
+
+//当前选中的板块
+const activePboardId = ref(0);
+watch(
+  () => store.state.activePBoardId,
+  (newVal, oldVal) => {
+    if (newVal != undefined) {
+      activePboardId.value = newVal;
+    }
+  },
+  { immediate: true, deep: true }
+);
+
+const activeBoardId = ref(0);
+watch(
+  () => store.state.activeBoardId,
+  (newVal, oldVal) => {
+    if (newVal != undefined) {
+      activeBoardId.value = newVal;
     }
   },
   { immediate: true, deep: true }
@@ -131,7 +155,11 @@ watch(
         <router-link to="/" class="header-logo">Easybbs</router-link>
         <!-- header-头部导航,板块信息 -->
         <div class="header-menu">
-          <span class="header-menu-board" to="/">首页</span>
+          <router-link
+            :class="['header-menu-board', activePboardId == '' ? 'active' : '']"
+            to="/"
+            >首页</router-link
+          >
 
           <template v-for="board in boardList">
             <el-popover
@@ -142,14 +170,20 @@ watch(
             >
               <template #reference>
                 <span
-                  class="header-menu-board"
+                  :class="[
+                    'header-menu-board',
+                    board.boardId == activePboardId ? 'active' : '',
+                  ]"
                   @click="boardClickHandler(board)"
                   >{{ board.boardName }}</span
                 >
               </template>
               <div class="sub-board-list">
                 <span
-                  class="sub-board"
+                  :class="[
+                    'sub-board',
+                    subBoard.boardId == activeBoardId ? 'active' : '',
+                  ]"
                   v-for="subBoard in board.children"
                   @click="subBoardClickHandler(subBoard)"
                 >
@@ -158,7 +192,10 @@ watch(
               </div>
             </el-popover>
             <span
-              class="header-menu-board"
+              :class="[
+                'header-menu-board',
+                board.boardId == activePboardId ? 'active' : '',
+              ]"
               @click="boardClickHandler(board)"
               v-else
               >{{ board.boardName }}</span
@@ -234,6 +271,9 @@ watch(
   top: 0;
   width: 100%;
   box-shadow: 0 2px 6px #ddd;
+  z-index: 10;
+  background: rgb(243, 243, 243);
+
   &-content {
     width: 130rem;
     margin: 0 auto;
@@ -260,6 +300,10 @@ watch(
       color: #333;
       margin-left: 2rem;
       cursor: pointer;
+    }
+
+    .active {
+      color: var(--link);
     }
   }
 
@@ -311,9 +355,13 @@ watch(
     margin-right: 10px;
 
     &:hover {
-      color: var(--link);
       cursor: pointer;
     }
+  }
+
+  .active {
+    background: var(--link);
+    color: #fff;
   }
 }
 
