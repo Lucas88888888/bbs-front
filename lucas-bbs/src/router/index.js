@@ -27,6 +27,12 @@ const router = createRouter({
         },
 
         {
+          path: "/post/:articleId/",
+          name: "articleDetail",
+          component: () => import("@/views/forum/ArticleDetail.vue"),
+        },
+
+        {
           path: "/user/:userId",
           name: "userInfo",
           component: () => import("@/views/ucenter/Ucenter.vue"),

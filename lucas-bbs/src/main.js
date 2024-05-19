@@ -14,6 +14,7 @@ import Verify from "@/utils/Verify.js";
 import Message from "@/utils/Message.js";
 import Request from "@/utils/Request.js";
 import API from "@/utils/API.js";
+import Utils from "@/utils/Utils.js";
 //全局组件
 import Dialog from "@/components/Dialog.vue";
 import Avatar from "@/components/Avatar.vue";
@@ -36,6 +37,7 @@ app.config.globalProperties.globalInfo = {
 app.config.globalProperties.Verify = Verify;
 app.config.globalProperties.Message = Message;
 app.config.globalProperties.Request = Request;
+app.config.globalProperties.Utils = Utils;
 
 app.component("Dialog", Dialog);
 app.component("Avatar", Avatar);

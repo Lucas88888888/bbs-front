@@ -37,7 +37,7 @@ const props = defineProps({
             >
           </template>
         </div>
-        <router-link :to="'/'" class="title">
+        <router-link :to="`/post/${data.articleId}`" class="title">
           <span v-if="data.topType === 1" class="top">置顶</span>
           <span>{{ data.title }}</span>
         </router-link>
@@ -54,7 +54,9 @@ const props = defineProps({
           }}</span>
         </div>
       </div>
-      <Cover :cover="data.cover" :width="10"></Cover>
+      <router-link :to="`/post/${data.articleId}`">
+        <Cover :cover="data.cover" :width="10"></Cover>
+      </router-link>
     </div>
   </div>
 </template>

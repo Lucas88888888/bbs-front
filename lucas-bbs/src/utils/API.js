@@ -9,4 +9,5 @@ export default {
   getImage: "/api/file/getImage/",
   loadBoard: "/board/loadBoard",
   loadArticle: "/forum/loadArticle",
+  getArticleDetail: "/forum/getArticleDetail",
 };
