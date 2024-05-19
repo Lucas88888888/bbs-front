@@ -8,6 +8,7 @@ export default createStore({
     showLogin: false,
     //板块信息
     boardList: [],
+
     activePBoardId: 0,
     activeBoardId: 0,
   },
@@ -34,6 +35,9 @@ export default createStore({
     },
   },
   mutations: {
+    updateActivePanel: (state, value) => {
+      state.activePanel = value;
+    },
     updateLoginUserInfo(state, value) {
       state.loginUserInfo = value;
     },

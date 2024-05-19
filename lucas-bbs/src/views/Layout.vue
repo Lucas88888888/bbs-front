@@ -15,10 +15,6 @@ const router = useRouter();
 const route = useRoute();
 const store = useStore();
 
-// const api = {
-//   getUserInfo: "/getUserInfo",
-// };
-
 //dialog对话框的按钮数量
 
 // 这是header导航栏的固定行为
@@ -86,17 +82,17 @@ loadBoard();
 
 //一级板块点击
 const boardClickHandler = (board) => {
-  router.push(`/forum/${board.boardId}`);
-  // router.push({ name: "topBoard", params: { pBoardId: board.boardId } });
+  // router.push(`/forum/${board.boardId}`);
+  router.push({ name: "topBoard", params: { pBoardId: board.boardId } });
 };
 
 //二级板块
 const subBoardClickHandler = (subBoard) => {
-  router.push(`/forum/${subBoard.pBoardId}/${subBoard.boardId}/`);
-  // router.push({
-  //   name: "secBoard",
-  //   params: { pBoardId: subBoard.pboardId, boardId: subBoard.boardId },
-  // });
+  // router.push(`/forum/${subBoard.pBoardId}/${subBoard.boardId}/`);
+  router.push({
+    name: "secBoard",
+    params: { pBoardId: subBoard.pBoardId, boardId: subBoard.boardId },
+  });
 };
 //监听 登录用户信息
 const userInfo = ref({});
@@ -124,13 +120,11 @@ watch(
 );
 
 //当前选中的板块
-const activePboardId = ref(0);
+const activePBoardId = ref(0);
 watch(
   () => store.state.activePBoardId,
   (newVal, oldVal) => {
-    if (newVal != undefined) {
-      activePboardId.value = newVal;
-    }
+    activePBoardId.value = newVal;
   },
   { immediate: true, deep: true }
 );
@@ -139,9 +133,7 @@ const activeBoardId = ref(0);
 watch(
   () => store.state.activeBoardId,
   (newVal, oldVal) => {
-    if (newVal != undefined) {
-      activeBoardId.value = newVal;
-    }
+    activeBoardId.value = newVal;
   },
   { immediate: true, deep: true }
 );
@@ -156,7 +148,10 @@ watch(
         <!-- header-头部导航,板块信息 -->
         <div class="header-menu">
           <router-link
-            :class="['header-menu-board', activePboardId == '' ? 'active' : '']"
+            :class="[
+              'header-menu-board',
+              activePBoardId == undefined ? 'active' : '',
+            ]"
             to="/"
             >首页</router-link
           >
@@ -172,7 +167,7 @@ watch(
                 <span
                   :class="[
                     'header-menu-board',
-                    board.boardId == activePboardId ? 'active' : '',
+                    board.boardId == activePBoardId ? 'active' : '',
                   ]"
                   @click="boardClickHandler(board)"
                   >{{ board.boardName }}</span
@@ -194,7 +189,7 @@ watch(
             <span
               :class="[
                 'header-menu-board',
-                board.boardId == activePboardId ? 'active' : '',
+                board.boardId == activePBoardId ? 'active' : '',
               ]"
               @click="boardClickHandler(board)"
               v-else

@@ -24,28 +24,11 @@ const articleListInfo = ref({});
 //一级板块与二级板块
 const pBoardId = ref(0);
 const boardId = ref(0);
+const panel = {
+  pBoardId,
+  boardId,
+};
 
-//初始化时的页面上现实的文章，只执行一次，即默认情况下的文章列表
-(async () => {
-  loading.value = true;
-  let params = {
-    pageNo: articleListInfo.value.pageNo,
-    // pBoardId: pBoardId.value,
-    // boardId: boardId.value,
-    orderType: orderType.value,
-  };
-  let result = await proxy.Request({
-    url: proxy.globalInfo.api.loadArticle,
-    params: params,
-    showLoading: false,
-  });
-  loading.value = false;
-
-  if (!result) {
-    return;
-  }
-  articleListInfo.value = result.data;
-})();
 //对应文章列表加载
 const loadArticle = async () => {
   loading.value = true;
@@ -75,32 +58,44 @@ const setSubBoard = () => {
   subBoardList.value = store.getters.getSubBoardList(pBoardId.value);
 };
 
-//文章排序的方式
-const changeOrderType = (type) => {
-  orderType.value = type;
-  loadArticle();
-};
-
 // 监听路由变化
+watch(
+  () => route.params.pBoardId,
+  (newVal, oldVal) => {
+    pBoardId.value = newVal;
+    panel.pBoardId.value = newVal;
+    // console.log(pBoardId.value);
+    store.commit("setActivePBoardId", newVal);
+  },
+  { immediate: true, deep: true }
+);
 
-onBeforeRouteUpdate((to, from) => {
-  pBoardId.value = to.params.pBoardId ? to.params.pBoardId : "";
-  boardId.value = to.params.boardId ? to.params.boardId : "";
-  loadArticle();
-  setSubBoard();
-  store.commit("setActivePBoardId", pBoardId.value);
-  store.commit("setActiveBoardId", boardId.value);
-});
+watch(
+  () => route.params.boardId,
+  (newVal, oldVal) => {
+    boardId.value = newVal;
+    panel.boardId.value = newVal;
 
-onBeforeRouteLeave((to, from) => {
-  pBoardId.value = to.params.pBoardId ? to.params.pBoardId : "";
-  boardId.value = to.params.boardId ? to.params.boardId : "";
-  setSubBoard();
-  loadArticle();
-  store.commit("setActivePBoardId", pBoardId.value);
-  store.commit("setActiveBoardId", boardId.value);
-});
+    // console.log(boardId.value);
 
+    store.commit("setActiveBoardId", newVal);
+  },
+  { immediate: true, deep: true }
+);
+
+watch(
+  () => panel,
+  (newVal, oldVal) => {
+    pBoardId.value = panel.pBoardId.value;
+    boardId.value = panel.boardId.value;
+    console.log(pBoardId.value, boardId.value);
+    loadArticle();
+    setSubBoard();
+  },
+  { immediate: true, deep: true }
+);
+
+//二级板块内容变化
 watch(
   () => store.state.boardList,
   (newVal, oldVal) => {
@@ -108,6 +103,12 @@ watch(
   },
   { immediate: true, deep: true }
 );
+
+//文章排序的方式
+const changeOrderType = (type) => {
+  orderType.value = type;
+  loadArticle();
+};
 </script>
 
 <template>
@@ -117,7 +118,7 @@ watch(
   >
     <!-- 二级板块信息 -->
     <div class="sub-board" v-if="pBoardId">
-      <span :class="['subBoard-item', boardId == 0 ? 'active' : '']">
+      <span :class="['subBoard-item', boardId == undefined ? 'active' : '']">
         <router-link :to="`/forum/${pBoardId}`">全部</router-link>
       </span>
       <span
@@ -213,3 +214,4 @@ watch(
   }
 }
 </style>
+valueOfvalueOfRouterLinkRouterLinkRouterLinkRouterLink

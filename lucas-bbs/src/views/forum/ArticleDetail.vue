@@ -45,7 +45,7 @@ onMounted(() => {
 
       <template v-if="articleInfo.boardId">
         <router-link
-          :to="`/forum/${articleInfo.pBoardName}/${articleInfo.boardId}`"
+          :to="`/forum/${articleInfo.pBoardId}/${articleInfo.boardId}`"
           >{{ articleInfo.boardName }}</router-link
         >
         <span class="iconfont icon-right"></span>
