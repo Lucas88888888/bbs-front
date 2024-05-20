@@ -128,6 +128,12 @@ const dialogConfig = reactive({
   title: "标题",
 });
 
+//登陆框的关闭操作
+const closeDialog = () => {
+  dialogConfig.show = false;
+  store.commit("updateShowLogin", false);
+};
+
 //注册时重复密码的检测--是否与第一次密码相同
 const checkRePassword = (rule, value, callback) => {
   if (value !== formData.value.registerPassword) {
@@ -275,7 +281,7 @@ const doSubmit = () => {
       :buttons="dialogConfig.buttons"
       width="40rem"
       :showCancel="false"
-      @close="dialogConfig.show = false"
+      @close="closeDialog"
     >
       <el-form
         class="login-register"

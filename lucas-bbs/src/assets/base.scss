@@ -32,13 +32,15 @@ div::-webkit-scrollbar-thumb:hover {
 
 html {
   font-size: 62.5%;
+  overflow-y: scroll;
 }
 
 body {
   margin: 0;
   padding: 0;
   background: rgb(243, 243, 243);
-  overflow-y: scroll;
+  // overflow-y: scroll;
+  // margin-left: calc(100vw - 100%);
 }
 
 a {

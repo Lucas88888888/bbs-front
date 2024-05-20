@@ -10,4 +10,7 @@ export default {
   loadBoard: "/board/loadBoard",
   loadArticle: "/forum/loadArticle",
   getArticleDetail: "/forum/getArticleDetail",
+  doLike: "/forum/doLike",
+  getUserDownloadInfo: "/forum/getUserDownloadInfo",
+  attachmentDownload: "/api/forum/attachmentDownload",
 };
