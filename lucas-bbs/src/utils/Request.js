@@ -76,7 +76,7 @@ const request = (config) => {
     url,
     params,
     dataType,
-    showLoading = true,
+    showLoading = false,
     errorCallback,
     showError = true,
   } = config;

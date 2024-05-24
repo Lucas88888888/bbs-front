@@ -33,6 +33,18 @@ const router = createRouter({
         },
 
         {
+          path: "/newPost",
+          name: "postArticle",
+          component: () => import("@/views/forum/EditPost.vue"),
+        },
+
+        {
+          path: "/editPost/:articleId",
+          name: "editArticle",
+          component: () => import("@/views/forum/EditPost.vue"),
+        },
+
+        {
           path: "/user/:userId",
           name: "userInfo",
           component: () => import("@/views/ucenter/Ucenter.vue"),

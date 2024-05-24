@@ -50,7 +50,7 @@ const loginAndRegister = (type) => {
 
 onMounted(() => {
   initScroll();
-  // getUserInfo();
+  getUserInfo();
 });
 
 //获取用户信息
@@ -137,6 +137,17 @@ watch(
   },
   { immediate: true, deep: true }
 );
+
+//发帖
+const newPost = () => {
+  if (!store.getters.getLoginUserInfo) {
+    loginAndRegister(1);
+  } else {
+    router.push({
+      name: "postArticle",
+    });
+  }
+};
 </script>
 
 <template>
@@ -199,7 +210,7 @@ watch(
         </div>
         <!-- header-头部用户信息 -->
         <div class="header-operate">
-          <el-button type="primary">
+          <el-button type="primary" @click="newPost">
             发帖<span class="iconfont icon-add"></span>
           </el-button>
           <el-button type="primary">
@@ -285,6 +296,12 @@ watch(
     font-size: 3rem;
     background-image: linear-gradient(to right, #40e0d0, #ff8c00, #ff0080);
     background-clip: text;
+
+    transition: all 0.1s ease-in;
+    &:hover {
+      opacity: 0.8;
+      transform: translateY(-3px);
+    }
   }
 
   &-menu {

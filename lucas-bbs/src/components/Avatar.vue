@@ -44,7 +44,25 @@ const goToUcenter = () => {
       :src="proxy.globalInfo.api.avatarUrl + userId"
       @click="goToUcenter"
     />
+    <div v-else class="no-login" :style="{ fontSize: width + 8 + 'px' }">
+      未登录
+    </div>
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.avatar {
+  cursor: pointer;
+  display: flex;
+  background: #f0f0f0;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  .no-login {
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    // border-radius: 50%;
+  }
+}
+</style>
