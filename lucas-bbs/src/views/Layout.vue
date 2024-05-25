@@ -99,11 +99,12 @@ const userInfo = ref({});
 watch(
   () => store.state.loginUserInfo,
   (newVal) => {
-    if (newVal !== undefined && newVal !== null) {
-      userInfo.value = newVal;
-    } else {
-      userInfo.value = {};
-    }
+    // if (newVal !== undefined && newVal !== null) {
+    //   userInfo.value = newVal;
+    // } else {
+    //   userInfo.value = {};
+    // }
+    userInfo.value = newVal || {};
   },
   { immediate: true, deep: true }
 );

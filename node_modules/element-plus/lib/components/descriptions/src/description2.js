@@ -6,7 +6,7 @@ var vue = require('vue');
 require('../../../utils/index.js');
 require('../../../hooks/index.js');
 require('../../form/index.js');
-var descriptionsRow = require('./descriptions-row2.js');
+var descriptionsRow = require('./descriptions-row.js');
 var token = require('./token.js');
 var description = require('./description.js');
 var pluginVue_exportHelper = require('../../../_virtual/plugin-vue_export-helper.js');

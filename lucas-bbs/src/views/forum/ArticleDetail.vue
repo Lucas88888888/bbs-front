@@ -221,7 +221,7 @@ const makeToc = () => {
         id: id,
         title: item.innerText,
         level: Number.parseInt(tagName.substring(1)),
-        offsetTop: item.offsetTop,
+        offsetTop: item.offsetTop + 59,
       });
     });
   });
@@ -231,6 +231,7 @@ const makeToc = () => {
 const anchorId = ref(null);
 const gotoAnchor = (domId) => {
   const dom = document.querySelector("#" + domId);
+  // anchorId.value = domId;
   dom.scrollIntoView({
     behavior: "smooth",
     block: "start",
@@ -245,9 +246,16 @@ const listenerScroll = () => {
         currentScrollTop >= tocArray.value[index].offsetTop &&
         currentScrollTop < tocArray.value[index + 1].offsetTop) ||
       (index == tocArray.value.length - 1 &&
-        currentScrollTop < tocArray.value[index].offsetTop)
+        currentScrollTop > tocArray.value[index].offsetTop)
     ) {
       anchorId.value = item.id;
+      console.log(currentScrollTop, tocArray.value[index].offsetTop);
+      console.log("--------");
+      for (const item of tocArray.value) {
+        console.log(item.offsetTop);
+      }
+      console.log("--------");
+
       return true;
     }
   });

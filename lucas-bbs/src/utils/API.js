@@ -21,4 +21,8 @@ export default {
   postArticle: "/forum/postArticle",
   articleDetail4Update: "/forum/articleDetail4Update",
   updateArticle: "/forum/updateArticle",
+  ucenterGetUserInfo: "/ucenter/getUserInfo",
+  loadUserArticle: "/ucenter/loadUserArticle",
+  updateUserInfo: "/ucenter/updateUserInfo",
+  loadUserIntegralRecord: "/ucenter/loadUserIntegralRecord",
 };

@@ -13,11 +13,11 @@ const router = useRouter();
 const route = useRoute();
 const store = useStore();
 
-//loading--用来标识正在加载的变量，在加载过程中，显示骨架效果
-const loading = ref(false);
-
 //文章显示排序方式
 const orderType = ref(0);
+
+//loading--用来标识正在加载的变量，在加载过程中，显示骨架效果
+const loading = ref(false);
 
 const articleListInfo = ref({});
 
@@ -88,7 +88,6 @@ watch(
   (newVal, oldVal) => {
     pBoardId.value = panel.pBoardId.value;
     boardId.value = panel.boardId.value;
-    console.log(pBoardId.value, boardId.value);
     loadArticle();
     setSubBoard();
   },

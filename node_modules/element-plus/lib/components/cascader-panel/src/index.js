@@ -9,7 +9,7 @@ require('../../../constants/index.js');
 require('../../../hooks/index.js');
 var menu = require('./menu.js');
 var store = require('./store.js');
-var node = require('./node2.js');
+var node = require('./node.js');
 var config = require('./config.js');
 var utils = require('./utils.js');
 var types$1 = require('./types.js');

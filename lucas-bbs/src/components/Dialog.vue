@@ -18,7 +18,7 @@ const props = defineProps({
   },
   top: {
     tpye: String,
-    default: "5rem",
+    default: "30px",
   },
   buttons: {
     type: Array,
@@ -76,7 +76,7 @@ const close = () => {
     border-bottom: 1px solid #ddd;
     padding: 1.5rem;
     min-height: 10rem;
-    max-height: calc(100vh - 20rem);
+    max-height: calc(100vh - 250px);
     overflow: auto;
   }
 

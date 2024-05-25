@@ -51,11 +51,11 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
           disabled: vue.unref(disabled),
           "model-value": vue.unref(innerValue),
           "validate-event": false,
-          label: vue.unref(t)("el.pagination.page"),
+          "aria-label": vue.unref(t)("el.pagination.page"),
           type: "number",
           "onUpdate:modelValue": handleInput,
           onChange: handleChange
-        }, null, 8, ["size", "class", "max", "disabled", "model-value", "label"]),
+        }, null, 8, ["size", "class", "max", "disabled", "model-value", "aria-label"]),
         vue.createElementVNode("span", {
           class: vue.normalizeClass([vue.unref(ns).e("classifier")])
         }, vue.toDisplayString(vue.unref(t)("el.pagination.pageClassifier")), 3)

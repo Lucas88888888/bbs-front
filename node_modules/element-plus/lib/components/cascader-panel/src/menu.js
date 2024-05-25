@@ -7,7 +7,7 @@ var index$1 = require('../../scrollbar/index.js');
 require('../../../hooks/index.js');
 var iconsVue = require('@element-plus/icons-vue');
 var index = require('../../icon/index.js');
-var node = require('./node.js');
+var node = require('./node2.js');
 var types = require('./types.js');
 var pluginVue_exportHelper = require('../../../_virtual/plugin-vue_export-helper.js');
 var index$2 = require('../../../hooks/use-namespace/index.js');

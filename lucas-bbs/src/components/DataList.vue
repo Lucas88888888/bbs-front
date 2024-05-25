@@ -36,6 +36,7 @@ const handlePageNoChange = (pageNo) => {
   <div class="pagination">
     <el-pagination
       v-if="dataSource.pageTotal > 1"
+      default-current-page="1"
       background
       :page-size="15"
       :total="dataSource.totalCount"

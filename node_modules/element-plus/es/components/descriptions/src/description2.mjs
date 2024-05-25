@@ -2,7 +2,7 @@ import { defineComponent, useSlots, provide, computed, openBlock, createElementB
 import '../../../utils/index.mjs';
 import '../../../hooks/index.mjs';
 import '../../form/index.mjs';
-import ElDescriptionsRow from './descriptions-row2.mjs';
+import ElDescriptionsRow from './descriptions-row.mjs';
 import { descriptionsKey } from './token.mjs';
 import { descriptionProps } from './description.mjs';
 import _export_sfc from '../../../_virtual/plugin-vue_export-helper.mjs';

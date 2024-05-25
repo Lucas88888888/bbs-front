@@ -5,7 +5,7 @@ import '../../../constants/index.mjs';
 import '../../../hooks/index.mjs';
 import ElCascaderMenu from './menu.mjs';
 import Store from './store.mjs';
-import Node from './node2.mjs';
+import Node from './node.mjs';
 import { CommonProps, useCascaderConfig } from './config.mjs';
 import { sortByOriginalOrder, checkNode, getMenuIndex } from './utils.mjs';
 import { CASCADER_PANEL_INJECTION_KEY } from './types.mjs';
