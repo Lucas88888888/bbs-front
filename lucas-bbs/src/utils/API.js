@@ -25,4 +25,7 @@ export default {
   loadUserArticle: "/ucenter/loadUserArticle",
   updateUserInfo: "/ucenter/updateUserInfo",
   loadUserIntegralRecord: "/ucenter/loadUserIntegralRecord",
+  getMessageCount: "/ucenter/getMessageCount",
+  logout: "logout",
+  loadMessageList: "/ucenter/loadMessageList",
 };

@@ -11,9 +11,15 @@ export default createStore({
 
     activePBoardId: 0,
     activeBoardId: 0,
+
+    //消息数量
+    messageCountInfo: {},
   },
 
   getters: {
+    getMessageCountInfo: () => {
+      return state.messageCountInfo;
+    },
     getLoginUserInfo: (state) => {
       return state.loginUserInfo;
     },
@@ -55,6 +61,14 @@ export default createStore({
 
     setActiveBoardId: (state, value) => {
       state.activeBoardId = value;
+    },
+    updateMessageCountInfo: (state, value) => {
+      state.messageCountInfo = value;
+    },
+    readMessage: (state, value) => {
+      state.messageCountInfo.total =
+        state.messageCountInfo.total - state.messageCountInfo[value];
+      state.messageCountInfo[value] = 0;
     },
   },
   actions: {},

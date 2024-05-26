@@ -149,6 +149,69 @@ const newPost = () => {
     });
   }
 };
+
+const gotoUcenter = (userId) => {
+  router.push({
+    name: "userInfo",
+    params: {
+      userId: userId,
+    },
+  });
+};
+
+//消息相关
+const gotoMessage = (type1) => {
+  router.push({
+    name: "message",
+    params: {
+      type: type1,
+    },
+  });
+};
+
+const messageCountInfo = ref({});
+const loadMessageCount = async () => {
+  let result = await proxy.Request({
+    url: proxy.globalInfo.api.getMessageCount,
+  });
+  if (!result) {
+    return;
+  }
+  messageCountInfo.value = result.data;
+  store.commit("updateMessageCountInfo", result.data);
+};
+loadMessageCount();
+
+watch(
+  () => store.state.loginUserInfo,
+  (newVal, oldVal) => {
+    if (newVal) {
+      loadMessageCount();
+    }
+  },
+  { immediate: true, deep: true }
+);
+
+watch(
+  () => store.state.messageCountInfo,
+  (newVal, oldVal) => {
+    messageCountInfo.value = newVal || {};
+  },
+  { immediate: true, deep: true }
+);
+
+//用户退出
+const logout = () => {
+  proxy.Confirm("确定要退出吗？", async () => {
+    let result = await proxy.Request({
+      url: proxy.globalInfo.api.logout,
+    });
+    if (!result) {
+      return;
+    }
+    store.commit("updateLoginUserInfo", null);
+  });
+};
 </script>
 
 <template>
@@ -221,17 +284,86 @@ const newPost = () => {
           <div v-if="userInfo.userId" class="user-box">
             <div class="message-info">
               <el-dropdown>
-                <el-badge :value="12" class="item"
+                <el-badge
+                  :value="messageCountInfo.total"
+                  class="item"
+                  :hidden="
+                    messageCountInfo.total == null ||
+                    messageCountInfo.total == 0
+                  "
                   ><span class="iconfont icon-message"></span>
                 </el-badge>
 
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item>回复我的</el-dropdown-item>
-                    <el-dropdown-item>赞了我的文章</el-dropdown-item>
-                    <el-dropdown-item>下载了我的附件</el-dropdown-item>
-                    <el-dropdown-item>赞了我的评论</el-dropdown-item>
-                    <el-dropdown-item>系统消息</el-dropdown-item>
+                    <el-dropdown-item
+                      @click="gotoMessage('reply')"
+                      class="message-item"
+                    >
+                      <span class="text">回复我的</span>
+                      <span
+                        class="count-tag"
+                        v-if="messageCountInfo.reply > 0"
+                        >{{
+                          messageCountInfo.reply > 99
+                            ? "99+"
+                            : messageCountInfo.reply
+                        }}</span
+                      >
+                    </el-dropdown-item>
+                    <el-dropdown-item
+                      @click="gotoMessage('likePost')"
+                      class="message-item"
+                      ><span class="text">赞了我的文章</span>
+                      <span
+                        class="count-tag"
+                        v-if="messageCountInfo.likePost > 0"
+                        >{{
+                          messageCountInfo.likePost > 99
+                            ? "99+"
+                            : messageCountInfo.likePost
+                        }}</span
+                      ></el-dropdown-item
+                    >
+                    <el-dropdown-item
+                      @click="gotoMessage('downloadAttachment')"
+                      class="message-item"
+                    >
+                      <span class="text">下载了我的附件</span>
+                      <span
+                        class="count-tag"
+                        v-if="messageCountInfo.downloadAttachment > 0"
+                        >{{
+                          messageCountInfo.downloadAttachment > 99
+                            ? "99+"
+                            : messageCountInfo.downloadAttachment
+                        }}</span
+                      ></el-dropdown-item
+                    >
+                    <el-dropdown-item
+                      @click="gotoMessage('likeComment')"
+                      class="message-item"
+                    >
+                      <span class="text">赞了我的评论</span>
+                      <span
+                        class="count-tag"
+                        v-if="messageCountInfo.likeComment > 0"
+                        >{{
+                          messageCountInfo.likeComment > 99
+                            ? "99+"
+                            : messageCountInfo.likeComment
+                        }}</span
+                      ></el-dropdown-item
+                    >
+                    <el-dropdown-item
+                      @click="gotoMessage('sys')"
+                      class="message-item"
+                    >
+                      <span class="text">系统消息</span>
+                      <span class="count-tag" v-if="messageCountInfo.sys > 0">{{
+                        messageCountInfo.sys > 99 ? "99+" : messageCountInfo.sys
+                      }}</span></el-dropdown-item
+                    >
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -239,12 +371,18 @@ const newPost = () => {
 
             <div class="user-info">
               <el-dropdown>
-                <Avatar :userId="userInfo.userId" :width="5"></Avatar>
+                <Avatar
+                  :userId="userInfo.userId"
+                  :width="5"
+                  :addLink="false"
+                ></Avatar>
 
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item>我的主页</el-dropdown-item>
-                    <el-dropdown-item>退出</el-dropdown-item>
+                    <el-dropdown-item @click="gotoUcenter(userInfo.userId)"
+                      >我的主页</el-dropdown-item
+                    >
+                    <el-dropdown-item @click="logout">退出</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -334,12 +472,14 @@ const newPost = () => {
       align-items: center;
       justify-content: space-around;
       .message-info {
+        margin-right: 10px;
+        cursor: pointer;
+
         .icon-message {
           font-size: 25px;
           color: rgb(147, 147, 147);
           margin-left: 5px;
         }
-        margin-right: 10px;
       }
 
       .user-info {
@@ -381,5 +521,26 @@ const newPost = () => {
 .body-content {
   margin-top: 6rem;
   position: relative;
+}
+
+.message-item {
+  display: flex;
+  justify-content: space-around;
+  .text {
+    flex: 1;
+  }
+  .count-tag {
+    height: 15px;
+    min-width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: #f56c6c;
+    border-radius: 50%;
+    font-size: 13px;
+    text-align: center;
+    margin-left: 10px;
+  }
 }
 </style>
