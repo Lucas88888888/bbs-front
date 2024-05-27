@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from "@/store";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -54,9 +55,26 @@ const router = createRouter({
           name: "message",
           component: () => import("@/views/ucenter/MessageList.vue"),
         },
+        {
+          path: "/search",
+          name: "search",
+          component: () => import("@/views/Search.vue"),
+        },
       ],
     },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "errorPage",
+      component: () => import("@/views/Error404.vue"),
+    },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.path.indexOf("/user") != -1 || to.path.indexOf("/newPost") != -1) {
+    store.commit("setActivePBoardId", -1);
+  }
+  next();
 });
 
 export default router;

@@ -1,15 +1,28 @@
 <script setup>
 import Avatar from "@/components/Avatar.vue";
-import { ref, reactive, getCurrentInstance } from "vue";
-import { useRoute, useRouter } from "vue-router";
-const { proxy } = getCurrentInstance();
+import { useRouter } from "vue-router";
+
 const router = useRouter();
-const route = useRoute();
+
 const props = defineProps({
   data: {
     type: Object,
   },
+  showComment: {
+    type: Boolean,
+  },
+  showEdit: {
+    type: Boolean,
+  },
+  htmlTitle: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+const editArticle = (articleId) => {
+  router.push(`/editPost/${articleId}`);
+};
 </script>
 
 <template>
@@ -38,8 +51,10 @@ const props = defineProps({
           </template>
         </div>
         <router-link :to="`/post/${data.articleId}`" class="title">
-          <span v-if="data.topType === 1" class="top">置顶</span>
-          <span>{{ data.title }}</span>
+          <span v-if="data.topType == 1" class="top">置顶</span>
+          <span v-if="data.status == 0" class="tag tag-no-audit">待审核</span>
+          <span v-if="htmlTitle" v-html="data.title"></span>
+          <span v-else>{{ data.title }}</span>
         </router-link>
         <div class="summary">{{ data.summary }}</div>
         <div class="article-info">
@@ -49,9 +64,16 @@ const props = defineProps({
           <span class="iconfont icon-good">{{
             data.goodCount === 0 ? "点赞" : data.likeCount
           }}</span>
-          <span class="iconfont icon-comment">{{
+          <span class="iconfont icon-comment" v-if="showComment">{{
             data.commentCount === 0 ? "评论" : data.commentCount
           }}</span>
+          <span
+            class="iconfont icon-edit"
+            v-if="showEdit"
+            @click="editArticle(data.articleId)"
+          >
+            编辑</span
+          >
         </div>
       </div>
       <router-link :to="`/post/${data.articleId}`">
@@ -126,6 +148,10 @@ const props = defineProps({
           &::before {
             padding-right: 3px;
           }
+        }
+        .icon-edit {
+          cursor: pointer;
+          color: var(--link);
         }
       }
     }

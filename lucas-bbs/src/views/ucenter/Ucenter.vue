@@ -110,6 +110,17 @@ const ucenterIntegralRecordRef = ref(null);
 const showIntegralRecord = () => {
   ucenterIntegralRecordRef.value.showRecord();
 };
+
+const showComment = ref(false);
+watch(
+  () => store.state.sysSetting,
+  (newVal, oldVal) => {
+    if (newVal) {
+      showComment.value = newVal.commentOpen;
+    }
+  },
+  { immediate: true, deep: true }
+);
 </script>
 
 <template>
@@ -190,7 +201,11 @@ const showIntegralRecord = () => {
             noDataMsg="暂无相关文章"
           >
             <template #dataList="{ data }">
-              <ArticleListItem :data="data"></ArticleListItem>
+              <ArticleListItem
+                :data="data"
+                :showEdit="activeTabName == 0 && isCurrentUser"
+                :showComment="showComment"
+              ></ArticleListItem>
             </template>
           </DataList>
         </div>

@@ -51,6 +51,7 @@ const loginAndRegister = (type) => {
 onMounted(() => {
   initScroll();
   getUserInfo();
+  loadSysSetting();
 });
 
 //获取用户信息
@@ -212,6 +213,36 @@ const logout = () => {
     store.commit("updateLoginUserInfo", null);
   });
 };
+
+//获取系统配置
+const loadSysSetting = async () => {
+  let result = await proxy.Request({
+    url: proxy.globalInfo.api.getSysSetting,
+  });
+  if (!result) {
+    return;
+  }
+  store.commit("saveSysSetting", result.data);
+};
+
+//跳转搜索页面
+const goSearch = () => {
+  router.push({ name: "search" });
+};
+
+//是否展示底部
+const showFooter = ref(true);
+watch(
+  () => route.path,
+  (newVal, oldVal) => {
+    if (newVal.indexOf("newPost") != -1 || newVal.indexOf("editPost") != -1) {
+      showFooter.value = false;
+    } else {
+      showFooter.value = true;
+    }
+  },
+  { immediate: true, deep: true }
+);
 </script>
 
 <template>
@@ -219,7 +250,7 @@ const logout = () => {
     <div class="header" v-if="showHeader">
       <div class="header-content">
         <!-- logo -->
-        <router-link to="/" class="header-logo">Easybbs</router-link>
+        <router-link to="/" class="header-logo">Lucasbbs</router-link>
         <!-- header-头部导航,板块信息 -->
         <div class="header-menu">
           <router-link
@@ -277,7 +308,7 @@ const logout = () => {
           <el-button type="primary" @click="newPost">
             发帖<span class="iconfont icon-add"></span>
           </el-button>
-          <el-button type="primary">
+          <el-button type="primary" @click="goSearch">
             搜索<span class="iconfont icon-search"></span>
           </el-button>
           <!-- 显示用户信息 -->
@@ -404,9 +435,48 @@ const logout = () => {
     <div class="body-content">
       <router-view></router-view>
     </div>
-  </div>
-  <div>
+    <div class="footer" v-if="showFooter">
+      <div
+        class="footer-content"
+        :style="{ width: proxy.globalInfo.bodyWidth + 'rem' }"
+      >
+        <el-row>
+          <el-col :span="6" class="item">
+            <div class="logo">
+              <div class="footer-logo">
+                <span>Lucasbbs</span>
+              </div>
+              <div class="info">一个属于程序猿的编程社区</div>
+            </div>
+          </el-col>
+          <el-col :span="6" class="item">
+            <div class="title">网站相关</div>
+            <div>
+              <div>
+                <a href="####">网站相关</a>
+              </div>
+
+              <div>
+                <a href="####">网站相关</a>
+              </div>
+              <div>
+                <a href="####">网站相关</a>
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="6" class="item">
+            <div class="title">友情链接</div>
+          </el-col>
+          <el-col :span="6" class="item">
+            <div class="title">关注站长</div>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
+
+    <!-- 登录注册 -->
     <LoginAndRegister ref="loginRegisterRef"></LoginAndRegister>
+    <el-backtop :right="100" :bottom="100"></el-backtop>
   </div>
 </template>
 
@@ -519,8 +589,9 @@ const logout = () => {
 }
 
 .body-content {
-  margin-top: 6rem;
+  margin-top: 60px;
   position: relative;
+  min-height: calc(100vh - 210px);
 }
 
 .message-item {
@@ -541,6 +612,48 @@ const logout = () => {
     font-size: 13px;
     text-align: center;
     margin-left: 10px;
+  }
+}
+
+.footer {
+  background: #e9e9e9;
+  height: 140px;
+  margin-top: 10px;
+  .footer-content {
+    margin: 0 auto;
+    padding-top: 10px;
+    .item {
+      text-align: left;
+      .title {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      a {
+        font-size: 14px;
+        text-decoration: none;
+        color: var(--text2);
+        line-height: 25px;
+      }
+    }
+    .logo {
+      .footer-logo {
+        & span {
+          font-size: 30px;
+          color: transparent;
+          background-image: linear-gradient(
+            to right,
+            #40e0d0,
+            #ff8c00,
+            #ff0080
+          );
+          background-clip: text;
+        }
+      }
+      .info {
+        margin-top: 10px;
+        color: rgb(91, 91, 91);
+      }
+    }
   }
 }
 </style>

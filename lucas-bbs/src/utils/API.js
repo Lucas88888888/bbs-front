@@ -28,4 +28,6 @@ export default {
   getMessageCount: "/ucenter/getMessageCount",
   logout: "logout",
   loadMessageList: "/ucenter/loadMessageList",
+  getSysSetting: "/getSysSetting",
+  search: "/forum/search",
 };

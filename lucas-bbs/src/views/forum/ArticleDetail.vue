@@ -195,7 +195,6 @@ const highlightCode = () => {
 //更新评论数量
 const updateCommentCount = (commentCount) => {
   articleInfo.value.commentCount = commentCount;
-  console.log(articleInfo.value.commentCount);
 };
 
 //获取目录
@@ -249,12 +248,6 @@ const listenerScroll = () => {
         currentScrollTop > tocArray.value[index].offsetTop)
     ) {
       anchorId.value = item.id;
-      console.log(currentScrollTop, tocArray.value[index].offsetTop);
-      console.log("--------");
-      for (const item of tocArray.value) {
-        console.log(item.offsetTop);
-      }
-      console.log("--------");
 
       return true;
     }
@@ -274,6 +267,17 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener("scroll", listenerScroll, false);
 });
+
+const showComment = ref(false);
+watch(
+  () => store.state.sysSetting,
+  (newVal, oldVal) => {
+    if (newVal) {
+      showComment.value = newVal.commentOpen;
+    }
+  },
+  { immediate: true, deep: true }
+);
 </script>
 
 <template>
@@ -303,8 +307,10 @@ onUnmounted(() => {
     <div class="detail-container" :style="{ width: 100 + 'rem' }">
       <div class="article-detail">
         <div class="title">
+          <span class="tag tag-no-audit" v-if="articleInfo.status == 0"
+            >待审核</span
+          >
           {{ articleInfo.title }}
-          <el-tag v-if="articleInfo.status == 0" type="danger">待审核</el-tag>
         </div>
         <!-- 用户信息 -->
         <div class="user-info">
@@ -367,7 +373,11 @@ onUnmounted(() => {
       </div>
 
       <!-- 评论 -->
-      <div class="comment-panel" id="view-comment">
+      <div
+        class="comment-panel"
+        id="view-comment"
+        v-if="showComment && articleInfo.status == 1"
+      >
         <CommentList
           v-if="articleInfo.articleId"
           :articleId="articleInfo.articleId"
@@ -421,12 +431,14 @@ onUnmounted(() => {
       type="info"
       :hidden="!articleInfo.commentCount > 0"
       :offset="[-10, 10]"
+      v-if="showComment"
     >
-      <div class="quick-item">
-        <span
-          class="iconfont icon-comment"
-          @click="goToPosition('view-comment')"
-        ></span>
+      <div
+        class="quick-item"
+        v-if="showComment"
+        @click="goToPosition('view-comment')"
+      >
+        <span class="iconfont icon-comment"></span>
       </div>
     </el-badge>
 

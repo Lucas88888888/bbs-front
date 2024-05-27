@@ -8,12 +8,14 @@ export default createStore({
     showLogin: false,
     //板块信息
     boardList: [],
-
+    //当前一级板块
     activePBoardId: 0,
+    //当前二级板块
     activeBoardId: 0,
-
     //消息数量
     messageCountInfo: {},
+    //系统设置
+    sysSetting: {},
   },
 
   getters: {
@@ -69,6 +71,9 @@ export default createStore({
       state.messageCountInfo.total =
         state.messageCountInfo.total - state.messageCountInfo[value];
       state.messageCountInfo[value] = 0;
+    },
+    saveSysSetting: (state, value) => {
+      state.sysSetting = value;
     },
   },
   actions: {},

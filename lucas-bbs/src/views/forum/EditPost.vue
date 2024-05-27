@@ -9,8 +9,8 @@ const { proxy } = getCurrentInstance();
 const router = useRouter();
 const route = useRoute();
 
-const markdownHeight = window.innerHeight - 60 - 70;
-const htmlEditorHeight = window.innerHeight - 60 - 150;
+const markdownHeight = window.innerHeight - 80 - 60;
+const htmlEditorHeight = window.innerHeight - 80 - 140;
 
 const articleId = ref(null);
 const getArticleDetail = () => {

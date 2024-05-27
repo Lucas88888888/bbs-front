@@ -20,9 +20,7 @@ const handlePageNoChange = (pageNo) => {
 </script>
 
 <template>
-  <div
-    v-if="!loading && dataSource.list !== null && dataSource.list.length === 0"
-  >
+  <div v-if="!loading && dataSource.list == 0">
     <NoData :msg="noDataMsg"></NoData>
   </div>
 
@@ -36,7 +34,6 @@ const handlePageNoChange = (pageNo) => {
   <div class="pagination">
     <el-pagination
       v-if="dataSource.pageTotal > 1"
-      default-current-page="1"
       background
       :page-size="15"
       :total="dataSource.totalCount"

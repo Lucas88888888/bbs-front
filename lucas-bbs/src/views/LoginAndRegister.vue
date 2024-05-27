@@ -449,6 +449,7 @@ const doSubmit = () => {
               clearable
               placeholder="请输入验证码"
               v-model.trim="formData.checkCode"
+              @keyup.enter="doSubmit"
             >
               <!-- 自定义头部组件 -->
               <template #prefix>

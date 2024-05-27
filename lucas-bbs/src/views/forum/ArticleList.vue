@@ -108,6 +108,18 @@ const changeOrderType = (type) => {
   orderType.value = type;
   loadArticle();
 };
+
+// 是否展示评论
+const showComment = ref(false);
+watch(
+  () => store.state.sysSetting,
+  (newVal, oldVal) => {
+    if (newVal) {
+      showComment.value = newVal.commentOpen;
+    }
+  },
+  { immediate: true, deep: true }
+);
 </script>
 
 <template>
@@ -160,7 +172,10 @@ const changeOrderType = (type) => {
           @loadData="loadArticle"
         >
           <template #dataList="{ data }">
-            <ArticleListItem :data="data"></ArticleListItem>
+            <ArticleListItem
+              :data="data"
+              :showComment="showComment"
+            ></ArticleListItem>
           </template>
         </DataList>
       </div>
