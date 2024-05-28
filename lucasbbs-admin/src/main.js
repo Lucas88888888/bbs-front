@@ -6,23 +6,25 @@ import "element-plus/dist/index.css";
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import "@/assets/icon/iconfont.css";
+import "./assets/icon/iconfont.css";
 
 //全局方法
-import Verify from "@/utils/Verify.js";
-import Message from "@/utils/Message.js";
-import Request from "@/utils/Request.js";
-import API from "@/utils/API.js";
-import Utils from "@/utils/Utils.js";
-import Confirm from "@/utils/Confirm.js";
+import Verify from "./utils/Verify.js";
+import Message from "./utils/Message.js";
+import Request from "./utils/Request.js";
+import API from "./utils/API.js";
+import Utils from "./utils/Utils.js";
+import Confirm from "./utils/Confirm.js";
 //全局组件
 import Dialog from "@/components/Dialog.vue";
 import Avatar from "@/components/Avatar.vue";
 import Cover from "@/components/Cover.vue";
+import Table from "@/components/Table.vue";
 
 const app = createApp(App);
 
 app.use(router);
+
 app.use(ElementPlus);
 app.config.globalProperties.VueCookies = VueCookies;
 app.config.globalProperties.globalInfo = {
@@ -40,5 +42,6 @@ app.config.globalProperties.Confirm = Confirm;
 app.component("Dialog", Dialog);
 app.component("Avatar", Avatar);
 app.component("Cover", Cover);
+app.component("Table", Table);
 
 app.mount("#app");
