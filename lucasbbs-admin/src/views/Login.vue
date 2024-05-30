@@ -18,7 +18,7 @@ const rules = {
 const checkCodeUrl = ref(proxy.globalInfo.api.checkCode);
 const changeCheckCode = () => {
   checkCodeUrl.value =
-    proxy.globalInfo.api.checkCode + "?" + new Date().getTime();
+    proxy.globalInfo.api.checkCode + "?time=" + new Date().getTime();
 };
 
 const login = () => {
@@ -31,7 +31,7 @@ const login = () => {
     let result = await proxy.Request({
       url: proxy.globalInfo.api.login,
       params: params,
-      errorCallBack: () => {
+      errorCallback: () => {
         changeCheckCode();
       },
     });
@@ -39,7 +39,7 @@ const login = () => {
       return;
     }
     proxy.Message.success("登录成功", () => {
-      router.push({ name: "layout" });
+      router.push("/");
     });
     proxy.Vuecookies.set("userInfo", result.data, 0);
   });
@@ -92,6 +92,7 @@ const login = () => {
               v-model.trim="formData.checkCode"
               size="large"
               class="input-panel"
+              @keyup.native="login"
             >
               <template #prefix>
                 <span class="iconfont icon-checkcode"></span>

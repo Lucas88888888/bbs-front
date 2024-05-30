@@ -29,16 +29,16 @@ const goToUcenter = () => {
   <div
     class="avatar"
     :style="{
-      width: width + 'rem',
-      height: width + 'rem',
+      width: width + 'px',
+      height: width + 'px',
       borderRadius: '50%,',
     }"
   >
     <img
       v-if="userId"
       :style="{
-        width: width + 'rem',
-        height: width + 'rem',
+        width: width + 'px',
+        height: width + 'px',
         borderRadius: '50%',
       }"
       :src="proxy.globalInfo.api.avatarUrl + userId"

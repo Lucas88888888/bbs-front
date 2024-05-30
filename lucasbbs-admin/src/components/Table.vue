@@ -3,10 +3,12 @@ import { ref } from "vue";
 
 const props = defineProps({
   dataSource: Object,
+  //是否展示分页
   showPagination: {
     type: Boolean,
     default: true,
   },
+  //表格属性
   options: {
     type: Object,
     default: {
@@ -28,10 +30,11 @@ const props = defineProps({
 
 //顶部60，内容区域距离顶部20 内容上下内间距15*2 分页区域高度46
 const topHeight = 60 + 20 + 30 + 46;
+// const topHeight = 248;
 const tableHeight = ref(
   props.options.tableHeight
     ? props.options.tableHeight
-    : window.innerHeight - topHeight - props.options.extHeight
+    : window.innerHeight - topHeight - (props.options.extHeight || 0)
 );
 
 //初始化
@@ -65,6 +68,11 @@ defineExpose({
 const emit = defineEmits(["rowSelected", "rowClick"]);
 
 //行点击
+const handleRowClick = (row) => {
+  emit("rowClick", row);
+};
+
+//多选
 const handleSelectionChange = (row) => {
   emit("rowSelected", row);
 };

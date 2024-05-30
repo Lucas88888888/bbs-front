@@ -10,16 +10,16 @@ const props = defineProps({
   },
   width: {
     type: Number,
-    default: 6,
+    default: 50,
   },
 });
 </script>
 
 <template>
-  <div class="cover" :style="{ width: width + 'rem', height: width + 'rem' }">
+  <div class="cover" :style="{ width: width + 'px', height: width + 'px' }">
     <el-image
       v-if="cover"
-      :style="{ width: width + 'rem', height: width + 'rem' }"
+      :style="{ width: width + 'px', height: width + 'px' }"
       fit="scale-down"
       loading="lazy"
       :src="cover ? proxy.globalInfo.api.getImage + cover : default_cover"
@@ -28,7 +28,7 @@ const props = defineProps({
     <img
       src="../assets/default_cover.jpg"
       v-else
-      :style="{ width: width + 'rem', height: width + 'rem' }"
+      :style="{ width: width + 'px', height: width + 'px' }"
     />
   </div>
 </template>

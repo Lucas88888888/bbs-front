@@ -56,7 +56,11 @@ const close = () => {
       <template v-if="(buttons && buttons.length > 0) || showCancel">
         <div class="dialog-footer">
           <el-button link @click="close" v-if="showCancel">取消</el-button>
-          <el-button v-for="btn in buttons" :type="btn.type" @click="btn.click">
+          <el-button
+            v-for="btn in buttons"
+            :type="btn.type || 'primary'"
+            @click="btn.click"
+          >
             {{ btn.text }}
           </el-button>
         </div>
@@ -67,15 +71,15 @@ const close = () => {
 
 <style lang="scss">
 .cust-dialog {
-  margin-bottom: 1rem;
+  margin-bottom: 10px;
   .el-dialog__body {
     padding: 0;
   }
   .dialog-body {
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
-    padding: 1.5rem;
-    min-height: 10rem;
+    padding: 15px;
+    min-height: 100px;
     max-height: calc(100vh - 250px);
     overflow: auto;
   }

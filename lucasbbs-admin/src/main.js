@@ -20,6 +20,7 @@ import Dialog from "@/components/Dialog.vue";
 import Avatar from "@/components/Avatar.vue";
 import Cover from "@/components/Cover.vue";
 import Table from "@/components/Table.vue";
+import CoverUpload from "@/components/CoverUpload.vue";
 
 const app = createApp(App);
 
@@ -31,6 +32,7 @@ app.config.globalProperties.globalInfo = {
   bodyWidth: 130,
   // avatarUrl: "/api/file/getAvatar/",
   api: API,
+  webDomain: import.meta.env.VITE_WEB_DOMAIN,
 };
 
 app.config.globalProperties.Verify = Verify;
@@ -43,5 +45,6 @@ app.component("Dialog", Dialog);
 app.component("Avatar", Avatar);
 app.component("Cover", Cover);
 app.component("Table", Table);
+app.component("CoverUpload", CoverUpload);
 
 app.mount("#app");

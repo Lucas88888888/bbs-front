@@ -301,20 +301,23 @@ watch(
       margin-left: 10px;
     }
   }
-  .main-content {
-    padding: 0;
-    .tag-content {
-      .el-tabs--border-card {
-        border: none;
-      }
-      .el-tabs__content {
-        display: none;
-      }
+}
+</style>
+
+<style lang="scss">
+.main-content {
+  padding: 0;
+  .tag-content {
+    .el-tabs--border-card {
+      border: none;
     }
-    .content-body {
-      overflow: hidden;
-      padding: 10px 10px 5px 10px;
+    .el-tabs__content {
+      display: none;
     }
+  }
+  .content-body {
+    overflow: hidden;
+    padding: 10px 10px 5px 10px;
   }
 }
 </style>
